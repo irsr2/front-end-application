@@ -4,6 +4,7 @@
 
 const initialState = {
     userData: null,
+    isBoard: true,
     pending: false,
     error: null
 };
@@ -12,7 +13,6 @@ export const UserReducer = (state = initialState, action) => {
     let newState;
     switch(action.type) {
         default:
-            console.warn(`UserReducer: Unhandled action type: ${action.type}`);
             return state;
     }
 };

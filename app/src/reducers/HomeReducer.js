@@ -18,6 +18,8 @@ export const HomeReducer = (state = initialState, action) => {
             newState = deepCopy(state);
             newState.displayType = DISPLAY_TYPE_ALL;
             newState.pending = true;
+            newState.error = null;
+            return newState;
         case PENDING_GET_ITEMS_BROKEN:
             newState = deepCopy(state);
             newState.displayType = DISPLAY_TYPE_BROKEN;
@@ -36,7 +38,6 @@ export const HomeReducer = (state = initialState, action) => {
             newState.error = action.payload;
             return newState;
         default:
-            console.warn(`HomeReducer: Unhandled action type: ${action.type}`);
             return state;
     }
 };

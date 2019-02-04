@@ -27,7 +27,6 @@ export const IssueReducer = (state = initialState, action) => {
             newState.error = action.payload;
             return newState;
         default:
-            console.warn(`IssueReducer: Unhandled action type: ${action.type}`);
             return state;
     }
 };

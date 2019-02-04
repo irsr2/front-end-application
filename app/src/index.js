@@ -11,7 +11,8 @@ import { IssueReducer } from './reducers/IssueReducer';
 import { UserReducer } from './reducers/UserReducer';
 import * as serviceWorker from './serviceWorker';
 
-import './index.css';
+import './scss/main.scss';
+import './scss/noscript.scss';
 
 const store = createStore(combineReducers({ home: HomeReducer, issue: IssueReducer, user: UserReducer}), applyMiddleware(thunk, logger));
 
