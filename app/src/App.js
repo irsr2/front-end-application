@@ -1,7 +1,7 @@
 import React from 'react';
-import { Route } from 'react-router-dom';
+import { Route, Redirect } from 'react-router-dom';
 import Navbar from './components/Navbar';
-import BoardView from './views/BoardView';
+import HomeView from './views/HomeView';
 import IssueView from './views/IssueView';
 
 class App extends React.Component {
@@ -10,7 +10,7 @@ class App extends React.Component {
       <div id="page-wrapper">
         <Navbar isBoard="true"/>
         <article id="main">
-          <Route exact path='/' component={() => <BoardView/>} />
+          <Route exact path='/' component={() => <HomeView/>} />
           <Route path='/issue/:id' render={(props) => <IssueView id={props.match.params.id} {...props} />} />
         </article>
       </div>
