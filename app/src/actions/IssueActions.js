@@ -10,7 +10,7 @@ export const getSingleItem = id => dispatch => {
     axios
         .get(getServerLink(`/singlePage/${id}`), { params: { id: id} })
         .then(({ data }) => {
-            dispatch({ type: SUCCESS_GET_SINGLE_ITEM, payload: data});
+            dispatch({ type: SUCCESS_GET_SINGLE_ITEM, payload: data[0]});
         })
         .catch(err => {
             dispatch({ type: ERROR_GET_SINGLE_ITEM, payload: err});
