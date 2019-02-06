@@ -59,15 +59,15 @@ export const addSchoolLog = (equipmentId, broken, comment) => (dispatch, getStat
     requestPromise(dispatch, axios.post(getServerLink('/schoolLog'), request, getAuthHeader(getState)));
 }
 
-export const addItem = (type, broken) => (dispatch, getState) => {
+export const addItem = (type, broken, imageFile) => (dispatch, getState) => {
     dispatch({ type: PENDING_CREATE_ITEM });
 
-    const request = {
-        type: type,
-        broken: broken
-    };
+    let formData = new FormData();
+    formData.append('equipmentImage', imageFile);
+    formData.append('type', type);
+    formData.append('broken', broken);
 
-    requestPromise(dispatch, axios.post(getServerLink('/equipment'), request, getAuthHeader(getState)));
+    requestPromise(dispatch, axios.post(getServerLink('/equipment'), formData, getAuthHeader(getState)));
 }
 
 export const editItem = (id, type, broken) => (dispatch, getState) => {
