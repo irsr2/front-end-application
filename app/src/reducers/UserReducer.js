@@ -6,10 +6,7 @@ const initialState = {
     username: null,
     token: null,
     pending: false,
-    error: null,
-    isLoggedIn: function() {
-        return this.token !== null;
-    }
+    error: null
 };
 
 export const UserReducer = (state = initialState, action) => {
