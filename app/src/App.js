@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Route, Redirect } from 'react-router-dom';
+import { Route, Redirect, withRouter } from 'react-router-dom';
 
 import Navbar from './components/Navbar';
 import Footer from './components/presentation/Footer';
@@ -16,12 +16,12 @@ class App extends React.Component {
   render() {
     return (
       <div id="page-wrapper">
-        <Navbar isBoard="true"/>
+        <Route component={_ => ( <Navbar isBoard="true"/> )} />
         <article id="main">
-          <Route exact path='/' render={_ => (
+          <Route exact path='/' render={props => (
             this.props.isLoggedIn
              ? ( <Redirect to="/app" /> ) 
-             : ( <LoginView /> )
+             : ( <LoginView location={props.location} /> )
           )} />
           <Route exact path='/register' render={_ => (
             this.props.isLoggedIn
@@ -61,4 +61,4 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(mapStateToProps)(App);
+export default withRouter(connect(mapStateToProps)(App));
