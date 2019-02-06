@@ -19,31 +19,31 @@
 
 // Palette.
 	$palette: (
-		bg:				#f3f6fa,
-		fg:				#7c8081,
-		border:			transparentize(#7c8081, 0.8),
+		bg:				rgb(237, 255, 237),
+		fg:				#606060,
+		border:			transparentize(#606060, 0.8),
 
 		header: (
-			bg:			#fff,
-			fg:			inherit,
+			bg:			#2A2A2A,
+			fg:			#FFFFFF,
 			alt-bg:		transparent,
 			alt-fg:		#fff
 		),
 
 		banner: (
-			bg:			#898786,
+			bg:			#606060,
 			fg:			#fff,
-			inner-bg:	#341b2b,
+			inner-bg:	#004612,
 			inner-fg:	#fff
 		),
 
 		footer: (
-			bg:			#E8EEF4,
-			fg:			#7c8081
+			bg:			rgb(237, 255, 237),
+			fg:			#606060
 		),
 
 		one: (
-			bg:			#83d3c9,
+			bg:			#45AB60,
 			fg:			#fff
 		),
 
@@ -63,7 +63,7 @@
 		),
 
 		navButton: (
-			bg:			rgba(163,169,170,0.75),
+			bg:			rgba(160,170,163,0.75),
 			fg:			#fff
 		),
 
