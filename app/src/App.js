@@ -2,6 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Route, Redirect, withRouter } from 'react-router-dom';
 
+import { checkCachedLogin } from './actions/UserActions';
+
 import Navbar from './components/Navbar';
 import Footer from './components/presentation/Footer';
 
@@ -15,6 +17,10 @@ import AddItemView from './views/AddItemView';
 import EditItemView from './views/EditItemView';
 
 class App extends React.Component {
+  componentDidMount() {
+    this.props.checkCachedLogin();
+  }
+  
   render() {
     return (
       <div id="page-wrapper">
@@ -63,4 +69,4 @@ const mapStateToProps = state => {
   };
 };
 
-export default withRouter(connect(mapStateToProps)(App));
+export default withRouter(connect(mapStateToProps, { checkCachedLogin })(App));
