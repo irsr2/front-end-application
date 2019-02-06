@@ -50,6 +50,7 @@ export const IssueReducer = (state = initialState, action) => {
             newState = deepCopy(state);
             newState.pending = false;
             newState.error = null;
+            return newState;
         case ERROR:
             newState = deepCopy(state);
             newState.pending = false;
