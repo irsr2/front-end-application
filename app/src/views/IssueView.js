@@ -4,11 +4,12 @@ import { getSingleItem } from '../actions/IssueActions';
 
 class IssueView extends React.Component {
     componentDidMount() {
+        console.log(this.props.id);
         this.props.getSingleItem(this.props.id);
     }
 
     render() {
-        let issue = <h2>Loading...</h2>;
+        let issue = <h2 style={{ textAlign: 'center', fontSize: '30px'}}>Loading...</h2>;
         if (!this.props.pending && this.props.item) {
             issue = (
                 <div className="wrapper style4" style={{ margin: '20px' }}>
@@ -29,7 +30,7 @@ class IssueView extends React.Component {
 
         return (
             <div>
-                <h1>Claim Detail {this.props.id}</h1>
+                <h1 style={{ textAlign: 'center', fontSize: '50px'}}>Claim Detail {this.props.id}</h1>
                 {issue}
             </div>
         )

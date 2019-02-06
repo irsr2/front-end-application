@@ -26,7 +26,7 @@ export const getSingleItem = id => (dispatch, getState)=> {
     axios
         .get(getServerLink(`/singlePage/${id}`), getAuthHeaderWithId(getState, id))
         .then(({ data }) => {
-            dispatch({ type: SUCCESS_GET_SINGLE_ITEM, payload: data[0]});
+            dispatch({ type: SUCCESS_GET_SINGLE_ITEM, payload: data});
         })
         .catch(err => {
             dispatch({ type: ERROR, payload: err});

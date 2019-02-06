@@ -5,6 +5,8 @@ import { Route, Redirect, withRouter } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Footer from './components/presentation/Footer';
 
+import { LOGIN_PATH, REGISTER_PATH, HOME_PATH, ISSUE_PATH, ADD_ITEM_PATH, EDIT_ITEM_PATH } from './utils/parameters';
+
 import LoginView from './views/LoginView';
 import RegisterView from './views/RegisterView';
 import HomeView from './views/HomeView';
@@ -18,34 +20,34 @@ class App extends React.Component {
       <div id="page-wrapper">
         <Route component={_ => ( <Navbar isBoard="true"/> )} />
         <article id="main">
-          <Route exact path='/' render={props => (
+          <Route exact path={LOGIN_PATH} render={props => (
             this.props.isLoggedIn
-             ? ( <Redirect to="/app" /> ) 
+             ? ( <Redirect to={HOME_PATH} /> ) 
              : ( <LoginView location={props.location} /> )
           )} />
-          <Route exact path='/register' render={_ => (
+          <Route exact path={REGISTER_PATH} render={_ => (
             this.props.isLoggedIn
-            ? ( <Redirect to='/app' /> )
+            ? ( <Redirect to={HOME_PATH} /> )
             : ( <RegisterView /> )
           )} />
-          <Route exact path='/app' render={_ => (
+          <Route exact path={HOME_PATH} render={_ => (
             !this.props.isLoggedIn
-            ? ( <Redirect to='/' /> )
+            ? ( <Redirect to={LOGIN_PATH} /> )
             : ( <HomeView /> )
           )} />
-          <Route path='/app/issue/:id' render={props => (
+          <Route path={ISSUE_PATH} render={props => (
             !this.props.isLoggedIn
-            ? ( <Redirect to='/' /> )
+            ? ( <Redirect to={LOGIN_PATH} /> )
             : ( <IssueView id={props.match.params.id} {...props} /> )
           )} />
-          <Route path='/app/add' render={_ => (
+          <Route path={ADD_ITEM_PATH} render={_ => (
             !this.props.isLoggedIn
-            ? ( <Redirect to='/' /> )
+            ? ( <Redirect to={LOGIN_PATH} /> )
             : ( <AddItemView /> )
           )} />
-          <Route path='/app/edit' render={_ => (
+          <Route path={EDIT_ITEM_PATH} render={_ => (
             !this.props.isLoggedIn
-            ? ( <Redirect to='/' /> )
+            ? ( <Redirect to={LOGIN_PATH} /> )
             : ( <EditItemView /> )
           )} />
         </article>
