@@ -62,7 +62,7 @@ const storeLogin = (data) => {
     sessionStorage.setItem('irsr2-token', data.token);
     sessionStorage.setItem('irsr2-userId', data.user.id);
     sessionStorage.setItem('irsr2-username', data.user.name);
-    sessionStorage.setItem('irsr2-isBoard', data.user.role === "School Admin" ? '0': '1');
+    sessionStorage.setItem('irsr2-role', data.user.role);
 };
 
 export const logout = _ => dispatch => {
@@ -74,14 +74,14 @@ export const checkCachedLogin = _ => dispatch => {
     const token = sessionStorage.getItem('irsr2-token');
     const userId = sessionStorage.getItem('irsr2-userId');
     const username = sessionStorage.getItem('irsr2-username');
-    const isBoard = sessionStorage.getItem('irsr2-isBoard');
+    const role = sessionStorage.getItem('irsr2-role');
     
-    if (token && userId && username && isBoard) {
+    if (token && userId && username && role) {
         const request = {
             token: token,
             userId: userId,
             username: username,
-            isBoard: isBoard === '1' ? true : false
+            isBoard: role == 2
         };
         dispatch({ type: USER_CACHE_LOGIN, payload: request });
     }

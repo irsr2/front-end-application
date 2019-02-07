@@ -39,7 +39,7 @@ class RegisterForm extends React.Component {
 
     handleSubmit(event) {
         event.preventDefault();
-        const name = this.state.email.slice();
+        const name = this.state.name.slice();
         const email = this.state.email.slice();
         const password = this.state.password.slice();
         const isBoard = this.state.roleSelected === '1';
