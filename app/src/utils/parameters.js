@@ -1,6 +1,4 @@
-export const ServerAddress = "localhost:5000";
-
-export const getServerLink = suffix => `http://${process.env.REACT_APP_BACKEND_ADDRESS}${suffix}`;
+export const getServerLink = suffix => `${process.env.REACT_APP_BACKEND_ADDRESS}${suffix}`;
 
 export const getAuthHeader = getState => {
     const { token } = getState().user;
