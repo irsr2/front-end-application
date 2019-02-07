@@ -47,7 +47,7 @@ export const login = (email, password, onSuccess, onError) => dispatch => {
         .post(getServerLink('/api/login'), request)
         .then(({ data }) => {
             dispatch({ type: SUCCESS_USER_LOGIN, payload: data});
-            storeLogin(data.message.substring(8), data.token);  // Hacky way of taking out the "Welcome " part of the msg.
+            storeLogin(data);
             if (onSuccess)
                 onSuccess();
         })
@@ -58,9 +58,12 @@ export const login = (email, password, onSuccess, onError) => dispatch => {
         });
 };
 
-const storeLogin = (username, token) => {
-    sessionStorage.setItem('irsr2username', username);
-    sessionStorage.setItem('irsr2token', token);
+const storeLogin = (data) => {
+
+    sessionStorage.setItem('irsr2-token', data.token);
+    sessionStorage.setItem('irsr2-userId', data.user.id);
+    sessionStorage.setItem('irsr2-username', data.user.name);
+    sessionStorage.setItem('irsr2-isBoard', data.user.role === "School Admin" ? false : true);
 };
 
 export const logout = _ => dispatch => {
@@ -69,12 +72,17 @@ export const logout = _ => dispatch => {
 };
 
 export const checkCachedLogin = _ => dispatch => {
-    const username = sessionStorage.getItem('irsr2username');
-    const token = sessionStorage.getItem('irsr2token');
-    if (username && token) {
+    const token = sessionStorage.getItem('irsr2-token');
+    const userId = sessionStorage.getItem('irsr2-userId');
+    const username = sessionStorage.getItem('irsr2-username');
+    const isBoard = sessionStorage.getItem('irsr2-isBoard');
+    
+    if (token && userId && username && isBoard) {
         const request = {
+            token: token,
+            userId: userId,
             username: username,
-            token: token
+            isBoard: isBoard
         };
         dispatch({ type: USER_CACHE_LOGIN, payload: request });
     }

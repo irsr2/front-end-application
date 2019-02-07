@@ -33,9 +33,9 @@ class AddLogForm extends React.Component {
         event.preventDefault();
 
         if (this.props.isBoard) {
-            this.props.addBoardLog(this.props.item.equipmentId, this.state.status, this.state.comment);
+            this.props.addBoardLog(this.props.item.id, this.state.status, this.state.comment);
         } else {
-            this.props.addSchoolLog(this.props.item.equipmentId, this.state.broken, this.state.comment);
+            this.props.addSchoolLog(this.props.item.id, this.state.broken, this.state.comment);
         }
     }
 
@@ -94,4 +94,10 @@ class AddLogForm extends React.Component {
     }
 }
 
-export default withRouter(connect(null, { addBoardLog, addSchoolLog, editItem })(AddLogForm));
+const mapStateToProps = state => {
+    return {
+        isBoard: state.user.isBoard
+    };
+}
+
+export default withRouter(connect(mapStateToProps, { addBoardLog, addSchoolLog, editItem })(AddLogForm));

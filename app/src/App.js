@@ -24,7 +24,7 @@ class App extends React.Component {
   render() {
     return (
       <div id="page-wrapper">
-        <Route component={_ => ( <Navbar isBoard="true"/> )} />
+        <Route component={_ => ( <Navbar /> )} />
         <article id="main">
           <Route exact path={NULL_PATH} render={_ =>(<Redirect to={LOGIN_PATH} />)} />
           <Route exact path={LOGIN_PATH} render={props => (

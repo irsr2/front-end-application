@@ -8,7 +8,10 @@ import ItemCard from '../components/ItemCard';
 
 class HomeView extends React.Component {
     componentDidMount() {
-        this.props.getBrokenItems(); 
+        if (this.props.isBoard)
+            this.props.getBrokenItems();
+        else
+            this.props.getItems();
     }
 
     handleGetBroken(event) {
@@ -74,7 +77,8 @@ const mapStateToProps = (state, ownProps) => {
     return { 
         items: state.home.items,
         pending: state.home.pending,
-        displayType: state.home.displayType
+        displayType: state.home.displayType,
+        isBoard: state.user.isBoard
     };
 }
 

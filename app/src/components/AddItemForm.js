@@ -11,7 +11,7 @@ class AddItemForm extends React.Component {
         super(props);
         this.state = {
             image: null,
-            type: 1,
+            type: '',
             broken: 0
         };
     }
@@ -37,7 +37,7 @@ class AddItemForm extends React.Component {
     }
 
     onSubmitSuccess() {
-        this.setState({ image: null, type: 1, broken: 0 });
+        this.setState({ image: null, type: '', broken: 0 });
         this.props.history.push(HOME_PATH);
     }
 
@@ -53,14 +53,7 @@ class AddItemForm extends React.Component {
                     <input type="file" id="image" name="image" accept="image/*" onChange={e => this.handleChangeImage(e)} />
                     <hr/>
                     <label htmlFor='type'>Type of Equipment: </label>
-                    <select id='type' value={this.state.type} onChange={e => this.handleChangeType(e)} required >
-                        <option value="1">TV</option>
-                        <option value="2">Server</option>
-                        <option value="3">Router</option>
-                        <option value="4">Tablet</option>
-                        <option value="5">HDMI Cables</option>
-                        <option value="6">Chromebook</option>
-                    </select>
+                    <input id='type' type='text' placeholder='TV' value={this.state.type} onChange={e => this.handleChangeType(e)} required />
                     <hr/>
                     <label htmlFor='broken'>Is it broken now? </label>
                     <select id='broken' value={this.state.broken} onChange={e => this.handleChangeBroken(e)} required >

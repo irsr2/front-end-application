@@ -30,6 +30,7 @@ export const getSingleItem = id => (dispatch, getState)=> {
         })
         .catch(err => {
             dispatch({ type: ERROR, payload: err});
+            console.log(err);
         });
 }
 
@@ -39,9 +40,11 @@ export const addBoardLog = (equipmentId, status, comment) => (dispatch, getState
     const request = {
         equipmentId: equipmentId,
         status: status,
-        boardUser: getState().user.username,
+        boardUser: getState().user.userId,
         boardComment: comment
     };
+    
+    console.dir(request);
 
     requestPromise(dispatch, axios.post(getServerLink('/boardLog'), request, getAuthHeader(getState)));
 }
@@ -52,9 +55,11 @@ export const addSchoolLog = (equipmentId, broken, comment) => (dispatch, getStat
     const request = {
         equipmentId: equipmentId,
         broken: broken,
-        user: getState().user.username,
-        commend: comment
+        user: getState().user.userId,
+        comment: comment
     };
+
+    console.dir(request);
 
     requestPromise(dispatch, axios.post(getServerLink('/schoolLog'), request, getAuthHeader(getState)));
 }

@@ -61,7 +61,7 @@ class IssueView extends React.Component {
                         </div>
                     </div>
                     <div style={{ display: 'flex', flexFlow: 'column nowrap', alignItems: 'center'}}>
-                        <AddLogForm isBoard={true} item={this.props.item} />
+                        <AddLogForm item={this.props.item} />
                         {this.props.logs.map(log => <LogEntry key={log.created_at} log={log} />)}
                     </div>
                 </div>
