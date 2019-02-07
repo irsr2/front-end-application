@@ -22,8 +22,8 @@ class Navbar extends React.Component {
         if (this.props.isLoggedIn) {
             navItems = (
                 <ul>
-                    <li className="current"><Link to={HOME_PATH}>{this.props.isBoard ? 'Claims' : 'Inventory'}</Link></li>
-                    {this.props.isBoard ? null : <li><Link to={ADD_ITEM_PATH}>Add a Claim</Link></li>}
+                    <li className="current"><Link to={HOME_PATH}>{'Claims'}</Link></li>
+                    <li><Link to={ADD_ITEM_PATH}>Add a Claim</Link></li>
                     <li><a className='button primary' onClick={_ => this.onLogout()}>Logout</a></li>
                 </ul>
             )

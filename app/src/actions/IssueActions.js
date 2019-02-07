@@ -65,7 +65,7 @@ export const addItem = (type, broken, imageFile) => (dispatch, getState) => {
     let formData = new FormData();
     formData.append('equipmentImage', imageFile);
     formData.append('type', type);
-    formData.append('broken', broken);
+    formData.append('broken', broken ? 1 : 0);
 
     requestPromise(dispatch, axios.post(getServerLink('/equipment'), formData, getAuthHeader(getState)));
 }

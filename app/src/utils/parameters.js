@@ -21,4 +21,4 @@ export const EDIT_ITEM_PATH = '/app/edit/:id';
 export const NULL_PATH = '/';
 
 export const getIssuePath = id => `/app/issue/${id}`;
-export const getEditItemPath = id => `app/edit/${id}`;
+export const getEditItemPath = id => `/app/edit/${id}`;

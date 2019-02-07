@@ -53,7 +53,7 @@ class HomeView extends React.Component {
                     <button onClick={e => this.handleGetAll(e)}>Inventory</button>
                 </div>
                 <hr/>
-                <div style={{ display: 'flex', flexFlow: 'row wrap' }}>
+                <div style={{ display: 'flex', flexFlow: 'row wrap', justifyContent: 'space-around'}}>
                     {cards}
                 </div>
                 

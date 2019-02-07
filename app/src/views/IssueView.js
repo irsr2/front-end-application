@@ -1,10 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 
 import Modal from '../components/presentation/Modal';
 import { getSingleItem, deleteItem } from '../actions/IssueActions';
-import { getServerLink, HOME_PATH } from '../utils/parameters';
+import { getServerLink, HOME_PATH, getEditItemPath } from '../utils/parameters';
 import LogEntry from '../components/LogEntry';
 
 class IssueView extends React.Component {
@@ -18,10 +18,6 @@ class IssueView extends React.Component {
     componentDidMount() {
         console.log(this.props.id);
         this.props.getSingleItem(this.props.id);
-    }
-
-    handleEdit(event) {
-        event.preventDefault();
     }
 
     handleOpenDeleteModal(event) {
@@ -52,7 +48,7 @@ class IssueView extends React.Component {
                         </div>
                         <h3>{this.props.item.type} - {this.props.item.broken ? 'Broken' : 'Not Broken'}</h3>
                         <div>
-                            <button style={{ margin: '10px' }} onClick={e => this.handleEdit(e)}>Edit</button>
+                            <Link to={getEditItemPath(this.props.id)}><button style={{ margin: '10px' }}>Edit</button></Link>
                             <button style={{ margin: '10px' }} onClick={e => this.handleOpenDeleteModal(e)}>Delete</button>
                         </div>
                     </div>
@@ -62,7 +58,7 @@ class IssueView extends React.Component {
                 </div>
             );
         }
-        
+
         return (
             <div>
                 <h1 style={{ textAlign: 'center', fontSize: '50px' }}>Claim Detail {this.props.id}</h1>
