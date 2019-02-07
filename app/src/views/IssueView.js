@@ -55,7 +55,7 @@ class IssueView extends React.Component {
                         </div>
                         <h3>{this.props.item.type} - {this.props.item.broken ? 'Broken' : 'Not Broken'}</h3>
                         <div>
-                            <Link to={getEditItemPath(this.props.id)}><button style={{ margin: '10px' }}>Edit</button></Link>
+                            <Link to={getEditItemPath(this.props.id)} style={{ borderBottom: 'unset' }}><button style={{ margin: '10px' }}>Edit</button></Link>
                             <button style={{ margin: '10px' }} onClick={e => this.handleOpenDeleteModal(e)}>Delete</button>
                         </div>
                     </div>

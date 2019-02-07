@@ -40,12 +40,13 @@ class AddLogForm extends React.Component {
     }
 
     onSubmitSuccess(dispatch, getState) {
-        if (this.state.status === 1 || this.state.broken === 0) {
-            // PUT request without updating image...
+        if (this.state.status === '') {
+            editItem(this.props.item.id, '', this.state.broken, null, (dispatch, getState) => this.onEditSuccess(dispatch, getState))(dispatch, getState);
+        } else if (this.state.status === 1) {
+            editItem(this.props.item.id, '', false, null, (dispatch, getState) => this.onEditSuccess(dispatch, getState))(dispatch, getState);
+        } else {
+            this.onEditSuccess(dispatch, getState);
         }
-
-        this.setState({ image: null, type: '', broken: 0 });
-        this.onEditSuccess(dispatch, getState);
     }
 
     onEditSuccess(dispatch, getState) {

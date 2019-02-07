@@ -59,11 +59,10 @@ export const login = (email, password, onSuccess, onError) => dispatch => {
 };
 
 const storeLogin = (data) => {
-
     sessionStorage.setItem('irsr2-token', data.token);
     sessionStorage.setItem('irsr2-userId', data.user.id);
     sessionStorage.setItem('irsr2-username', data.user.name);
-    sessionStorage.setItem('irsr2-isBoard', data.user.role === "School Admin" ? false : true);
+    sessionStorage.setItem('irsr2-isBoard', data.user.role === "School Admin" ? '0': '1');
 };
 
 export const logout = _ => dispatch => {
@@ -82,7 +81,7 @@ export const checkCachedLogin = _ => dispatch => {
             token: token,
             userId: userId,
             username: username,
-            isBoard: isBoard
+            isBoard: isBoard === '1' ? true : false
         };
         dispatch({ type: USER_CACHE_LOGIN, payload: request });
     }

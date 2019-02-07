@@ -48,11 +48,11 @@ class EditItemForm extends React.Component {
         return (
             <PageForm>
                 <form onSubmit={e => this.handleSubmit(e)}>
-                    <label htmlFor='image'>Add an image for reference: </label>
+                    <label htmlFor='image'>Upload new image? </label>
                     <input type="file" id="image" name="image" accept="image/*" onChange={e => this.handleChangeImage(e)} />
                     <hr />
-                    <label htmlFor='type'>Type of Equipment: </label>
-                    <input id='type' type='text' placeholder='TV' value={this.state.type} onChange={e => this.handleChangeType(e)} required />
+                    <label htmlFor='type'>Change Equipment Type? </label>
+                    <input id='type' type='text' placeholder='TV' value={this.state.type} onChange={e => this.handleChangeType(e)} />
                     <hr />
                     <label htmlFor='broken'>Is it broken now? </label>
                     <select id='broken' value={this.state.broken} onChange={e => this.handleChangeBroken(e)} required >

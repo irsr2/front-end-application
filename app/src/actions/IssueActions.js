@@ -80,8 +80,10 @@ export const editItem = (id, type, broken, imageFile, onSuccess) => (dispatch, g
     dispatch({ type: PENDING_EDIT_ITEM });
 
     let formData = new FormData();
-    formData.append('equipmentImage', imageFile);
-    formData.append('type', type);
+    if (imageFile)
+        formData.append('equipmentImage', imageFile);
+    if (type && type.length > 0)
+        formData.append('type', type);
     formData.append('broken', broken ? 1 : 0);
 
     requestPromise(dispatch, getState, axios.put(getServerLink(`/equipment/${id}`), formData, getAuthHeaderWithId(getState, id)), onSuccess);
