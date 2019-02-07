@@ -1,4 +1,5 @@
 import React from 'react';
+import moment from 'moment';
 
 class LogEntry extends React.Component {
     render() {
@@ -33,7 +34,7 @@ class LogEntry extends React.Component {
             <div className="wrapper style4" style={{ width: '50%', marginBottom: '10px', padding: '20px' }}>
                 <p style={{ textAlign: 'center', marginBottom: '10px' }}>{log}</p>
                 <p style={{ textAlign: 'center', marginBottom: '10px'}}>{newStatus}</p>
-                <p style={{ textAlign: 'right', marginBottom: '10px' }}>from {this.props.log.name} [{this.props.log.role}]</p>
+                <p style={{ textAlign: 'right', marginBottom: '10px' }}>from {this.props.log.name} [{this.props.log.role}] {moment.utc(this.props.log.created_at).fromNow()}</p>
             </div>
         );
     }
