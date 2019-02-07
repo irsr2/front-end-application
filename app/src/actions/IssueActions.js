@@ -43,7 +43,7 @@ export const addBoardLog = (equipmentId, status, comment) => (dispatch, getState
         boardComment: comment
     };
 
-    requestPromise(dispatch, axios.post(getServerLink('/boardLog'), request, getAuthHeader(getState)));  
+    requestPromise(dispatch, axios.post(getServerLink('/boardLog'), request, getAuthHeader(getState)));
 }
 
 export const addSchoolLog = (equipmentId, broken, comment) => (dispatch, getState) => {
@@ -70,15 +70,15 @@ export const addItem = (type, broken, imageFile) => (dispatch, getState) => {
     requestPromise(dispatch, axios.post(getServerLink('/equipment'), formData, getAuthHeader(getState)));
 }
 
-export const editItem = (id, type, broken) => (dispatch, getState) => {
+export const editItem = (id, type, broken, imageFile) => (dispatch, getState) => {
     dispatch({ type: PENDING_EDIT_ITEM });
 
-    const request = {
-        type: type,
-        broken: broken
-    };
+    let formData = new FormData();
+    formData.append('equipmentImage', imageFile);
+    formData.append('type', type);
+    formData.append('broken', broken ? 1 : 0);
 
-    requestPromise(dispatch, axios.put(getServerLink(`/equipment/${id}`), request, getAuthHeaderWithId(getState, id)));
+    requestPromise(dispatch, axios.put(getServerLink(`/equipment/${id}`), formData, getAuthHeaderWithId(getState, id)));
 }
 
 export const deleteItem = id => (dispatch, getState) => {

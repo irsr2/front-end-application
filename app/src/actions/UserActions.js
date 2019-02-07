@@ -12,7 +12,7 @@ export const ERROR_USER_LOGIN = 'ERROR_USER_LOGIN';
 export const USER_LOGOUT = 'USER_LOGOUT';
 export const USER_CACHE_LOGIN = 'USER_CACHE_LOGIN';
 
-export const register = (name, email, password, isBoard) => dispatch => {
+export const register = (name, email, password, isBoard, onSuccess, onError) => dispatch => {
     dispatch({ type: PENDING_USER_REGISTER });
 
     const request = {
@@ -25,14 +25,17 @@ export const register = (name, email, password, isBoard) => dispatch => {
         .post(getServerLink('/api/register'), request)
         .then(_ => {
             dispatch({ type: SUCCESS_USER_REGISTER });
-            // Redirect to login page
+            if (onSuccess)
+                onSuccess();
         })
         .catch(err => {
             dispatch({ type: ERROR_USER_REGISTER, payload: err });
+            if (onError)
+                onError();
         });
 };
 
-export const login = (email, password) => dispatch => {
+export const login = (email, password, onSuccess, onError) => dispatch => {
     dispatch({ type: PENDING_USER_LOGIN });
 
     const request = {
@@ -43,11 +46,15 @@ export const login = (email, password) => dispatch => {
     axios
         .post(getServerLink('/api/login'), request)
         .then(({ data }) => {
-            storeLogin(data.message.substring(8), data.token);  // Hacky way of taking out the "Welcome " part of the msg.
             dispatch({ type: SUCCESS_USER_LOGIN, payload: data});
+            storeLogin(data.message.substring(8), data.token);  // Hacky way of taking out the "Welcome " part of the msg.
+            if (onSuccess)
+                onSuccess();
         })
         .catch(err => {
             dispatch({ type: ERROR_USER_LOGIN, payload: err});
+            if (onError)
+                onError();
         });
 };
 

@@ -52,10 +52,10 @@ class App extends React.Component {
             ? ( <Redirect to={LOGIN_PATH} /> )
             : ( <AddItemView /> )
           )} />
-          <Route path={EDIT_ITEM_PATH} render={_ => (
+          <Route path={EDIT_ITEM_PATH} render={props => (
             !this.props.isLoggedIn
             ? ( <Redirect to={LOGIN_PATH} /> )
-            : ( <EditItemView /> )
+            : ( <EditItemView id={props.match.params.id} {...props} /> )
           )} />
         </article>
         <Footer />

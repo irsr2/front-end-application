@@ -6,6 +6,7 @@ import Modal from '../components/presentation/Modal';
 import { getSingleItem, deleteItem } from '../actions/IssueActions';
 import { getServerLink, HOME_PATH, getEditItemPath } from '../utils/parameters';
 import LogEntry from '../components/LogEntry';
+import AddLogForm from '../components/AddLogForm';
 
 class IssueView extends React.Component {
     constructor(props) {
@@ -33,8 +34,15 @@ class IssueView extends React.Component {
     handleDelete(event) {
         event.preventDefault();
         this.props.deleteItem(this.props.id);
+    }
+
+    onDeleteSuccess() {
         this.setState({ modalOpen: false });
         this.props.history.push(HOME_PATH);
+    }
+
+    onDeleteError() {
+        console.error("Delete failed- how to show this?");
     }
 
     render() {
@@ -53,6 +61,7 @@ class IssueView extends React.Component {
                         </div>
                     </div>
                     <div style={{ display: 'flex', flexFlow: 'column nowrap', alignItems: 'center'}}>
+                        <AddLogForm isBoard={true} item={this.props.item} />
                         {this.props.logs.map(log => <LogEntry key={log.created_at} log={log} />)}
                     </div>
                 </div>
