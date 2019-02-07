@@ -11,17 +11,21 @@ export const PENDING_DELETE_ITEM = 'PENDING_DELETE_ITEM';
 export const SUCCESS = 'SUCCESS';
 export const ERROR = 'ERROR';
 
-const requestPromise = (dispatch, request) => {
+const requestPromise = (dispatch, getState, request, onSuccess, onError) => {
     request
         .then(({ data }) => {
             dispatch({ type: SUCCESS, payload: data });
+            if (onSuccess)
+                onSuccess(dispatch, getState);
         })
         .catch(err => {
             dispatch({ type: ERROR, payload: err });
+            if (onError)
+                onError(dispatch, getState);
         });
 };
 
-export const getSingleItem = id => (dispatch, getState)=> {
+export const getSingleItem = id => (dispatch, getState) => {
     dispatch({ type: PENDING_GET_SINGLE_ITEM, payload: id});
     axios
         .get(getServerLink(`/singlePage/${id}`), getAuthHeaderWithId(getState, id))
@@ -33,33 +37,35 @@ export const getSingleItem = id => (dispatch, getState)=> {
         });
 }
 
-export const addBoardLog = (equipmentId, status, comment) => (dispatch, getState) => {
+export const addBoardLog = (equipmentId, status, comment, onSuccess) => (dispatch, getState) => {
     dispatch({ type: PENDING_ADD_LOG });
 
     const request = {
         equipmentId: equipmentId,
         status: status,
-        boardUser: getState().user.username,
+        boardUser: getState().user.userId,
         boardComment: comment
     };
 
-    requestPromise(dispatch, axios.post(getServerLink('/boardLog'), request, getAuthHeader(getState)));  
+    requestPromise(dispatch, getState, axios.post(getServerLink('/boardLog'), request, getAuthHeader(getState)), onSuccess);
 }
 
-export const addSchoolLog = (equipmentId, broken, comment) => (dispatch, getState) => {
+export const addSchoolLog = (equipmentId, broken, comment, onSuccess) => (dispatch, getState) => {
     dispatch({ type: PENDING_ADD_LOG });
     
     const request = {
         equipmentId: equipmentId,
         broken: broken,
-        user: getState().user.username,
-        commend: comment
+        user: getState().user.userId,
+        comment: comment
     };
 
-    requestPromise(dispatch, axios.post(getServerLink('/schoolLog'), request, getAuthHeader(getState)));
+    console.dir(request);
+
+    requestPromise(dispatch, getState, axios.post(getServerLink('/schoolLog'), request, getAuthHeader(getState)), onSuccess);
 }
 
-export const addItem = (type, broken, imageFile) => (dispatch, getState) => {
+export const addItem = (type, broken, imageFile, onSuccess) => (dispatch, getState) => {
     dispatch({ type: PENDING_CREATE_ITEM });
 
     let formData = new FormData();
@@ -67,22 +73,24 @@ export const addItem = (type, broken, imageFile) => (dispatch, getState) => {
     formData.append('type', type);
     formData.append('broken', broken ? 1 : 0);
 
-    requestPromise(dispatch, axios.post(getServerLink('/equipment'), formData, getAuthHeader(getState)));
+    requestPromise(dispatch, getState, axios.post(getServerLink('/equipment'), formData, getAuthHeader(getState)), onSuccess);
 }
 
-export const editItem = (id, type, broken) => (dispatch, getState) => {
+export const editItem = (id, type, broken, imageFile, onSuccess) => (dispatch, getState) => {
     dispatch({ type: PENDING_EDIT_ITEM });
 
-    const request = {
-        type: type,
-        broken: broken
-    };
+    let formData = new FormData();
+    if (imageFile)
+        formData.append('equipmentImage', imageFile);
+    if (type && type.length > 0)
+        formData.append('type', type);
+    formData.append('broken', broken ? 1 : 0);
 
-    requestPromise(dispatch, axios.put(getServerLink(`/equipment/${id}`), request, getAuthHeaderWithId(getState, id)));
+    requestPromise(dispatch, getState, axios.put(getServerLink(`/equipment/${id}`), formData, getAuthHeaderWithId(getState, id)), onSuccess);
 }
 
-export const deleteItem = id => (dispatch, getState) => {
+export const deleteItem = (id, onSuccess, onError) => (dispatch, getState) => {
     dispatch({ type: PENDING_DELETE_ITEM });
 
-    requestPromise(dispatch, axios.delete(getServerLink(`/equipment/${id}`), getAuthHeaderWithId(getState, id)));
+    requestPromise(dispatch, getState, axios.delete(getServerLink(`/equipment/${id}`), getAuthHeaderWithId(getState, id)), onSuccess, onError);
 }

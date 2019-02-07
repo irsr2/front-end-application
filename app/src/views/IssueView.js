@@ -6,6 +6,7 @@ import Modal from '../components/presentation/Modal';
 import { getSingleItem, deleteItem } from '../actions/IssueActions';
 import { getServerLink, HOME_PATH, getEditItemPath } from '../utils/parameters';
 import LogEntry from '../components/LogEntry';
+import AddLogForm from '../components/AddLogForm';
 
 class IssueView extends React.Component {
     constructor(props) {
@@ -32,9 +33,15 @@ class IssueView extends React.Component {
 
     handleDelete(event) {
         event.preventDefault();
-        this.props.deleteItem(this.props.id);
-        this.setState({ modalOpen: false });
+        this.props.deleteItem(this.props.id, _ => this.onDeleteSuccess(), _ => this.onDeleteError());
+    }
+
+    onDeleteSuccess() {
         this.props.history.push(HOME_PATH);
+    }
+
+    onDeleteError() {
+        this.setState({ modalOpen: false });
     }
 
     render() {
@@ -48,11 +55,12 @@ class IssueView extends React.Component {
                         </div>
                         <h3>{this.props.item.type} - {this.props.item.broken ? 'Broken' : 'Not Broken'}</h3>
                         <div>
-                            <Link to={getEditItemPath(this.props.id)}><button style={{ margin: '10px' }}>Edit</button></Link>
+                            <Link to={getEditItemPath(this.props.id)} style={{ borderBottom: 'unset' }}><button style={{ margin: '10px' }}>Edit</button></Link>
                             <button style={{ margin: '10px' }} onClick={e => this.handleOpenDeleteModal(e)}>Delete</button>
                         </div>
                     </div>
                     <div style={{ display: 'flex', flexFlow: 'column nowrap', alignItems: 'center'}}>
+                        <AddLogForm item={this.props.item} />
                         {this.props.logs.map(log => <LogEntry key={log.created_at} log={log} />)}
                     </div>
                 </div>

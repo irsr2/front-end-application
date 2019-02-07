@@ -24,7 +24,7 @@ class App extends React.Component {
   render() {
     return (
       <div id="page-wrapper">
-        <Route component={_ => ( <Navbar isBoard="true"/> )} />
+        <Route component={_ => ( <Navbar /> )} />
         <article id="main">
           <Route exact path={NULL_PATH} render={_ =>(<Redirect to={LOGIN_PATH} />)} />
           <Route exact path={LOGIN_PATH} render={props => (
@@ -52,10 +52,10 @@ class App extends React.Component {
             ? ( <Redirect to={LOGIN_PATH} /> )
             : ( <AddItemView /> )
           )} />
-          <Route path={EDIT_ITEM_PATH} render={_ => (
+          <Route path={EDIT_ITEM_PATH} render={props => (
             !this.props.isLoggedIn
             ? ( <Redirect to={LOGIN_PATH} /> )
-            : ( <EditItemView /> )
+            : ( <EditItemView id={props.match.params.id} {...props} /> )
           )} />
         </article>
         <Footer />

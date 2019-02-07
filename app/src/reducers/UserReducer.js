@@ -35,8 +35,10 @@ export const UserReducer = (state = initialState, action) => {
             return newState;
         case SUCCESS_USER_LOGIN:
             newState = deepCopy(state);
-            newState.username = action.payload.message.substring(8); // Hacky way of taking out the "Welcome " part of the msg.
             newState.token = action.payload.token;
+            newState.userId = action.payload.user.id;
+            newState.username = action.payload.user.name;
+            newState.isBoard = action.payload.user.role.toString() === "2" ? true : false;
             newState.pending = false;
             newState.error = null;
             return newState;
@@ -54,8 +56,10 @@ export const UserReducer = (state = initialState, action) => {
             return newState;
         case USER_CACHE_LOGIN:
             newState = deepCopy(state);
-            newState.username = action.payload.username;
             newState.token = action.payload.token;
+            newState.userId = action.payload.userId
+            newState.username = action.payload.username;
+            newState.isBoard = action.payload.isBoard;
             newState.pending = false;
             newState.error = null;
             return newState;

@@ -12,7 +12,7 @@ class AddItemForm extends React.Component {
         this.state = {
             image: null,
             type: '',
-            broken: false
+            broken: 0
         };
     }
 
@@ -33,9 +33,15 @@ class AddItemForm extends React.Component {
     handleSubmit(event) {
         event.preventDefault();
         const req = Object.assign({}, this.state);
-        this.props.addItem(req.type, req.broken, req.image);
-        this.setState({ image: null, type: '', broken: false });
+        this.props.addItem(req.type, req.broken, req.image, () => this.onSubmitSuccess());
+    }
+
+    onSubmitSuccess() {
         this.props.history.push(HOME_PATH);
+    }
+
+    onSubmitError() {
+        console.error('Notify the user of an error somehow.');
     }
 
     render() {
@@ -46,12 +52,12 @@ class AddItemForm extends React.Component {
                     <input type="file" id="image" name="image" accept="image/*" onChange={e => this.handleChangeImage(e)} />
                     <hr/>
                     <label htmlFor='type'>Type of Equipment: </label>
-                    <input id='type' type='text' value={this.state.type} placeholder='Tablet' onChange={e => this.handleChangeType(e)} />
+                    <input id='type' type='text' placeholder='TV' value={this.state.type} onChange={e => this.handleChangeType(e)} required />
                     <hr/>
                     <label htmlFor='broken'>Is it broken now? </label>
                     <select id='broken' value={this.state.broken} onChange={e => this.handleChangeBroken(e)} required >
-                        <option value="false">Not Broken</option>
-                        <option value="true">Broken</option>
+                        <option value="0">Not Broken</option>
+                        <option value="1">Broken</option>
                     </select>
                     <hr/>
                     <button type='submit'>Add Item</button>

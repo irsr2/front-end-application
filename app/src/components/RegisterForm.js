@@ -1,6 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 
+import { LOGIN_PATH } from '../utils/parameters';
 import { register } from '../actions/UserActions';
 import PageForm from './presentation/PageForm';
 
@@ -37,12 +39,15 @@ class RegisterForm extends React.Component {
 
     handleSubmit(event) {
         event.preventDefault();
-        const name = this.state.email.slice();
+        const name = this.state.name.slice();
         const email = this.state.email.slice();
         const password = this.state.password.slice();
         const isBoard = this.state.roleSelected === '1';
-        this.props.register(name, email, password, isBoard);
-        this.setState({ name: '', email: '', password: '', roleSelected: '0' });
+        this.props.register(name, email, password, isBoard, _ => this.onRegisterSuccess());
+    }
+
+    onRegisterSuccess() {
+        this.props.history.push(LOGIN_PATH);
     }
 
     render() {
@@ -68,4 +73,4 @@ class RegisterForm extends React.Component {
     }
 }
 
-export default connect(null, { register })(RegisterForm);
+export default withRouter(connect(null, { register })(RegisterForm));

@@ -12,7 +12,7 @@ export const ERROR_USER_LOGIN = 'ERROR_USER_LOGIN';
 export const USER_LOGOUT = 'USER_LOGOUT';
 export const USER_CACHE_LOGIN = 'USER_CACHE_LOGIN';
 
-export const register = (name, email, password, isBoard) => dispatch => {
+export const register = (name, email, password, isBoard, onSuccess, onError) => dispatch => {
     dispatch({ type: PENDING_USER_REGISTER });
 
     const request = {
@@ -25,14 +25,17 @@ export const register = (name, email, password, isBoard) => dispatch => {
         .post(getServerLink('/api/register'), request)
         .then(_ => {
             dispatch({ type: SUCCESS_USER_REGISTER });
-            // Redirect to login page
+            if (onSuccess)
+                onSuccess();
         })
         .catch(err => {
             dispatch({ type: ERROR_USER_REGISTER, payload: err });
+            if (onError)
+                onError();
         });
 };
 
-export const login = (email, password) => dispatch => {
+export const login = (email, password, onSuccess, onError) => dispatch => {
     dispatch({ type: PENDING_USER_LOGIN });
 
     const request = {
@@ -43,17 +46,23 @@ export const login = (email, password) => dispatch => {
     axios
         .post(getServerLink('/api/login'), request)
         .then(({ data }) => {
-            storeLogin(data.message.substring(8), data.token);  // Hacky way of taking out the "Welcome " part of the msg.
             dispatch({ type: SUCCESS_USER_LOGIN, payload: data});
+            storeLogin(data);
+            if (onSuccess)
+                onSuccess();
         })
         .catch(err => {
             dispatch({ type: ERROR_USER_LOGIN, payload: err});
+            if (onError)
+                onError();
         });
 };
 
-const storeLogin = (username, token) => {
-    sessionStorage.setItem('irsr2username', username);
-    sessionStorage.setItem('irsr2token', token);
+const storeLogin = (data) => {
+    sessionStorage.setItem('irsr2-token', data.token);
+    sessionStorage.setItem('irsr2-userId', data.user.id);
+    sessionStorage.setItem('irsr2-username', data.user.name);
+    sessionStorage.setItem('irsr2-role', data.user.role.toString());
 };
 
 export const logout = _ => dispatch => {
@@ -62,12 +71,17 @@ export const logout = _ => dispatch => {
 };
 
 export const checkCachedLogin = _ => dispatch => {
-    const username = sessionStorage.getItem('irsr2username');
-    const token = sessionStorage.getItem('irsr2token');
-    if (username && token) {
+    const token = sessionStorage.getItem('irsr2-token');
+    const userId = sessionStorage.getItem('irsr2-userId');
+    const username = sessionStorage.getItem('irsr2-username');
+    const role = sessionStorage.getItem('irsr2-role');
+    
+    if (token && userId && username && role) {
         const request = {
+            token: token,
+            userId: userId,
             username: username,
-            token: token
+            isBoard: role === '2'
         };
         dispatch({ type: USER_CACHE_LOGIN, payload: request });
     }

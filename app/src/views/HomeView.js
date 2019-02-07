@@ -8,22 +8,33 @@ import ItemCard from '../components/ItemCard';
 
 class HomeView extends React.Component {
     componentDidMount() {
-        this.props.getBrokenItems();
+        if (this.props.isBoard)
+            this.props.getBrokenItems();
+        else
+            this.props.getItems();
     }
 
     handleGetBroken(event) {
         event.preventDefault();
-        this.props.getBrokenItems();
+        this.props.getBrokenItems(); 
     }
 
     handleGetResolved(event) {
         event.preventDefault();
-        this.props.getResolved();
+        this.props.getResolved(); 
     }
 
     handleGetAll(event) {
         event.preventDefault();
-        this.props.getItems();
+        this.props.getItems(); 
+    }
+
+    onGetSuccess() {
+        console.log("GET succeeded.");
+    }
+
+    onGetError() {
+        console.error("GET failed- display this somehow");
     }
 
     render() {
@@ -42,7 +53,7 @@ class HomeView extends React.Component {
 
         let cards = <h2 style={{ textAlign: 'center', fontSize: '30px'}}>Loading...</h2>;
         if (!this.props.pending)
-            cards = this.props.items.map(item => <ItemCard key={item.equipmentId} item={item} />);
+            cards = this.props.items.map(item => <ItemCard key={item.id} item={item} />);
 
         return (
             <div>
@@ -66,7 +77,8 @@ const mapStateToProps = (state, ownProps) => {
     return { 
         items: state.home.items,
         pending: state.home.pending,
-        displayType: state.home.displayType
+        displayType: state.home.displayType,
+        isBoard: state.user.isBoard
     };
 }
 
