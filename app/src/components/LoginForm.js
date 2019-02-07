@@ -39,6 +39,7 @@ class LoginForm extends React.Component {
                     <input id='email' type='email' value={this.state.email} placeholder='example@email.com' onChange={e => this.handleChangeEmail(e)} />
                     <label htmlFor='password'>Password: </label>
                     <input id='password' type='password' value={this.state.password} placeholder='Enter Password...' onChange={e => this.handleChangePassword(e)} />
+                    <hr/>
                     <button type='submit'>Login</button>
                 </form>
             </PageForm>

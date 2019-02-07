@@ -1,4 +1,5 @@
-import { PENDING_USER_REGISTER, SUCCESS_USER_REGISTER, ERROR_USER_REGISTER, PENDING_USER_LOGIN, SUCCESS_USER_LOGIN, ERROR_USER_LOGIN, USER_LOGOUT } from '../actions/UserActions';
+import { PENDING_USER_REGISTER, SUCCESS_USER_REGISTER, ERROR_USER_REGISTER, PENDING_USER_LOGIN, 
+    SUCCESS_USER_LOGIN, ERROR_USER_LOGIN, USER_LOGOUT, USER_CACHE_LOGIN } from '../actions/UserActions';
 import deepCopy from '../utils/deepCopy';
 // Handles state involving logins and user data.
 
@@ -48,6 +49,13 @@ export const UserReducer = (state = initialState, action) => {
             newState = deepCopy(state);
             newState.username = null;
             newState.token = null;
+            newState.pending = false;
+            newState.error = null;
+            return newState;
+        case USER_CACHE_LOGIN:
+            newState = deepCopy(state);
+            newState.username = action.payload.username;
+            newState.token = action.payload.token;
             newState.pending = false;
             newState.error = null;
             return newState;

@@ -1,9 +1,13 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Route, Redirect } from 'react-router-dom';
+import { Route, Redirect, withRouter } from 'react-router-dom';
+
+import { checkCachedLogin } from './actions/UserActions';
 
 import Navbar from './components/Navbar';
 import Footer from './components/presentation/Footer';
+
+import { LOGIN_PATH, REGISTER_PATH, HOME_PATH, ISSUE_PATH, ADD_ITEM_PATH, EDIT_ITEM_PATH, NULL_PATH } from './utils/parameters';
 
 import LoginView from './views/LoginView';
 import RegisterView from './views/RegisterView';
@@ -13,39 +17,44 @@ import AddItemView from './views/AddItemView';
 import EditItemView from './views/EditItemView';
 
 class App extends React.Component {
+  componentDidMount() {
+    this.props.checkCachedLogin();
+  }
+  
   render() {
     return (
       <div id="page-wrapper">
-        <Navbar isBoard="true"/>
+        <Route component={_ => ( <Navbar isBoard="true"/> )} />
         <article id="main">
-          <Route exact path='/' render={_ => (
+          <Route exact path={NULL_PATH} render={_ =>(<Redirect to={LOGIN_PATH} />)} />
+          <Route exact path={LOGIN_PATH} render={props => (
             this.props.isLoggedIn
-             ? ( <Redirect to="/app" /> ) 
-             : ( <LoginView /> )
+             ? ( <Redirect to={HOME_PATH} /> ) 
+             : ( <LoginView location={props.location} /> )
           )} />
-          <Route exact path='/register' render={_ => (
+          <Route exact path={REGISTER_PATH} render={_ => (
             this.props.isLoggedIn
-            ? ( <Redirect to='/app' /> )
+            ? ( <Redirect to={HOME_PATH} /> )
             : ( <RegisterView /> )
           )} />
-          <Route exact path='/app' render={_ => (
+          <Route exact path={HOME_PATH} render={_ => (
             !this.props.isLoggedIn
-            ? ( <Redirect to='/' /> )
+            ? ( <Redirect to={LOGIN_PATH} /> )
             : ( <HomeView /> )
           )} />
-          <Route path='/app/issue/:id' render={props => (
+          <Route path={ISSUE_PATH} render={props => (
             !this.props.isLoggedIn
-            ? ( <Redirect to='/' /> )
+            ? ( <Redirect to={LOGIN_PATH} /> )
             : ( <IssueView id={props.match.params.id} {...props} /> )
           )} />
-          <Route path='/app/add' render={_ => (
+          <Route path={ADD_ITEM_PATH} render={_ => (
             !this.props.isLoggedIn
-            ? ( <Redirect to='/' /> )
+            ? ( <Redirect to={LOGIN_PATH} /> )
             : ( <AddItemView /> )
           )} />
-          <Route path='/app/edit' render={_ => (
+          <Route path={EDIT_ITEM_PATH} render={_ => (
             !this.props.isLoggedIn
-            ? ( <Redirect to='/' /> )
+            ? ( <Redirect to={LOGIN_PATH} /> )
             : ( <EditItemView /> )
           )} />
         </article>
@@ -61,4 +70,4 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(mapStateToProps)(App);
+export default withRouter(connect(mapStateToProps, { checkCachedLogin })(App));
