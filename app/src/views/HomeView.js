@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { getBrokenItems } from '../actions/HomeActions';
 import ItemCard from '../components/ItemCard';
 
-class BoardView extends React.Component {
+class HomeView extends React.Component {
     componentDidMount() {
         this.props.getBrokenItems();
     }
@@ -33,4 +33,4 @@ const mapStateToProps = (state, ownProps) => {
     };
 }
 
-export default connect(mapStateToProps, { getBrokenItems})(BoardView);
+export default connect(mapStateToProps, { getBrokenItems})(HomeView);
