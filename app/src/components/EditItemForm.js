@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
-import { HOME_PATH } from '../utils/parameters';
+import { getIssuePath } from '../utils/parameters';
 import { editItem } from '../actions/IssueActions';
 import PageForm from './presentation/PageForm';
 
@@ -33,12 +33,11 @@ class EditItemForm extends React.Component {
     handleSubmit(event) {
         event.preventDefault();
         const req = Object.assign({}, this.state);
-        this.props.editItem(this.props.id, req.type, req.broken, req.image);
+        this.props.editItem(this.props.id, req.type, req.broken, req.image, () => this.onSubmitSuccess());
     }
 
     onSubmitSuccess() {
-        this.setState({ image: null, type: '', broken: 0 });
-        this.props.history.push(HOME_PATH);
+        this.props.history.push(getIssuePath(this.props.id));
     }
 
     onSubmitError() {

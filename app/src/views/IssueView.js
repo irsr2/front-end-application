@@ -33,16 +33,15 @@ class IssueView extends React.Component {
 
     handleDelete(event) {
         event.preventDefault();
-        this.props.deleteItem(this.props.id);
+        this.props.deleteItem(this.props.id, _ => this.onDeleteSuccess(), _ => this.onDeleteError());
     }
 
     onDeleteSuccess() {
-        this.setState({ modalOpen: false });
         this.props.history.push(HOME_PATH);
     }
 
     onDeleteError() {
-        console.error("Delete failed- how to show this?");
+        this.setState({ modalOpen: false });
     }
 
     render() {

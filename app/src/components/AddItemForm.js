@@ -33,11 +33,10 @@ class AddItemForm extends React.Component {
     handleSubmit(event) {
         event.preventDefault();
         const req = Object.assign({}, this.state);
-        this.props.addItem(req.type, req.broken, req.image);
+        this.props.addItem(req.type, req.broken, req.image, () => this.onSubmitSuccess());
     }
 
     onSubmitSuccess() {
-        this.setState({ image: null, type: '', broken: 0 });
         this.props.history.push(HOME_PATH);
     }
 
