@@ -38,7 +38,7 @@ export const UserReducer = (state = initialState, action) => {
             newState.token = action.payload.token;
             newState.userId = action.payload.user.id;
             newState.username = action.payload.user.name;
-            newState.isBoard = action.payload.user.role === "School Admin" ? false : true;
+            newState.isBoard = action.payload.user.role.toString() === "2" ? true : false;
             newState.pending = false;
             newState.error = null;
             return newState;
