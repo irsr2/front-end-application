@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
-import { addBoardLog, addSchoolLog, editItem } from '../actions/IssueActions';
+import { addBoardLog, addSchoolLog, editItem, getSingleItem } from '../actions/IssueActions';
 
 class AddLogForm extends React.Component {
     constructor(props) {
@@ -33,18 +33,23 @@ class AddLogForm extends React.Component {
         event.preventDefault();
 
         if (this.props.isBoard) {
-            this.props.addBoardLog(this.props.item.id, this.state.status, this.state.comment);
+            this.props.addBoardLog(this.props.item.id, this.state.status, this.state.comment, (dispatch, getState) => this.onSubmitSuccess(dispatch, getState));
         } else {
-            this.props.addSchoolLog(this.props.item.id, this.state.broken, this.state.comment);
+            this.props.addSchoolLog(this.props.item.id, this.state.broken, this.state.comment, (dispatch, getState) => this.onSubmitSuccess(dispatch, getState));
         }
     }
 
-    onSubmitSuccess() {
+    onSubmitSuccess(dispatch, getState) {
         if (this.state.status === 1 || this.state.broken === 0) {
-            console.error('Edit the equipment item now.');
+            // PUT request without updating image...
         }
 
         this.setState({ image: null, type: '', broken: 0 });
+        this.onEditSuccess(dispatch, getState);
+    }
+
+    onEditSuccess(dispatch, getState) {
+        getSingleItem(this.props.item.id)(dispatch, getState);
     }
 
     onSubmitError() {

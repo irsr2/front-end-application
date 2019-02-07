@@ -11,21 +11,21 @@ export const PENDING_DELETE_ITEM = 'PENDING_DELETE_ITEM';
 export const SUCCESS = 'SUCCESS';
 export const ERROR = 'ERROR';
 
-const requestPromise = (dispatch, request, onSuccess, onError) => {
+const requestPromise = (dispatch, getState, request, onSuccess, onError) => {
     request
         .then(({ data }) => {
             dispatch({ type: SUCCESS, payload: data });
             if (onSuccess)
-                onSuccess();
+                onSuccess(dispatch, getState);
         })
         .catch(err => {
             dispatch({ type: ERROR, payload: err });
             if (onError)
-                onError();
+                onError(dispatch, getState);
         });
 };
 
-export const getSingleItem = id => (dispatch, getState)=> {
+export const getSingleItem = id => (dispatch, getState) => {
     dispatch({ type: PENDING_GET_SINGLE_ITEM, payload: id});
     axios
         .get(getServerLink(`/singlePage/${id}`), getAuthHeaderWithId(getState, id))
@@ -34,11 +34,10 @@ export const getSingleItem = id => (dispatch, getState)=> {
         })
         .catch(err => {
             dispatch({ type: ERROR, payload: err});
-            console.log(err);
         });
 }
 
-export const addBoardLog = (equipmentId, status, comment) => (dispatch, getState) => {
+export const addBoardLog = (equipmentId, status, comment, onSuccess) => (dispatch, getState) => {
     dispatch({ type: PENDING_ADD_LOG });
 
     const request = {
@@ -47,13 +46,11 @@ export const addBoardLog = (equipmentId, status, comment) => (dispatch, getState
         boardUser: getState().user.userId,
         boardComment: comment
     };
-    
-    console.dir(request);
 
-    requestPromise(dispatch, axios.post(getServerLink('/boardLog'), request, getAuthHeader(getState)));
+    requestPromise(dispatch, getState, axios.post(getServerLink('/boardLog'), request, getAuthHeader(getState)), onSuccess);
 }
 
-export const addSchoolLog = (equipmentId, broken, comment) => (dispatch, getState) => {
+export const addSchoolLog = (equipmentId, broken, comment, onSuccess) => (dispatch, getState) => {
     dispatch({ type: PENDING_ADD_LOG });
     
     const request = {
@@ -65,7 +62,7 @@ export const addSchoolLog = (equipmentId, broken, comment) => (dispatch, getStat
 
     console.dir(request);
 
-    requestPromise(dispatch, axios.post(getServerLink('/schoolLog'), request, getAuthHeader(getState)));
+    requestPromise(dispatch, getState, axios.post(getServerLink('/schoolLog'), request, getAuthHeader(getState)), onSuccess);
 }
 
 export const addItem = (type, broken, imageFile, onSuccess) => (dispatch, getState) => {
@@ -76,7 +73,7 @@ export const addItem = (type, broken, imageFile, onSuccess) => (dispatch, getSta
     formData.append('type', type);
     formData.append('broken', broken ? 1 : 0);
 
-    requestPromise(dispatch, axios.post(getServerLink('/equipment'), formData, getAuthHeader(getState)), onSuccess);
+    requestPromise(dispatch, getState, axios.post(getServerLink('/equipment'), formData, getAuthHeader(getState)), onSuccess);
 }
 
 export const editItem = (id, type, broken, imageFile, onSuccess) => (dispatch, getState) => {
@@ -87,11 +84,11 @@ export const editItem = (id, type, broken, imageFile, onSuccess) => (dispatch, g
     formData.append('type', type);
     formData.append('broken', broken ? 1 : 0);
 
-    requestPromise(dispatch, axios.put(getServerLink(`/equipment/${id}`), formData, getAuthHeaderWithId(getState, id)), onSuccess);
+    requestPromise(dispatch, getState, axios.put(getServerLink(`/equipment/${id}`), formData, getAuthHeaderWithId(getState, id)), onSuccess);
 }
 
 export const deleteItem = (id, onSuccess, onError) => (dispatch, getState) => {
     dispatch({ type: PENDING_DELETE_ITEM });
 
-    requestPromise(dispatch, axios.delete(getServerLink(`/equipment/${id}`), getAuthHeaderWithId(getState, id)), onSuccess, onError);
+    requestPromise(dispatch, getState, axios.delete(getServerLink(`/equipment/${id}`), getAuthHeaderWithId(getState, id)), onSuccess, onError);
 }
